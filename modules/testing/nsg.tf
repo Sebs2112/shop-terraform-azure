@@ -1,5 +1,5 @@
 resource "azurerm_network_security_group" "nsg-frontend" {
-    name                = "frontend-nsg"
+    name                = "${terraform.workspace}-frontend-nsg"
     location            = "${azurerm_resource_group.TDP-res-group.location}"
     resource_group_name = "${azurerm_resource_group.TDP-res-group.name}"
     
@@ -40,7 +40,7 @@ resource "azurerm_network_security_group" "nsg-frontend" {
 
 
 resource "azurerm_network_security_group" "nsg-managment" {
-    name                = "managment-nsg"
+    name                = "${terraform.workspace}-managment-nsg"
     location            = "${azurerm_resource_group.TDP-res-group.location}"
     resource_group_name = "${azurerm_resource_group.TDP-res-group.name}"
     
@@ -59,7 +59,7 @@ resource "azurerm_network_security_group" "nsg-managment" {
     
 }
 resource "azurerm_network_security_group" "nsg-backend" {
-    name                = "backend-nsg"
+    name                = "${terraform.workspace}-backend-nsg"
     location            = "${azurerm_resource_group.TDP-res-group.location}"
     resource_group_name = "${azurerm_resource_group.TDP-res-group.name}"
     

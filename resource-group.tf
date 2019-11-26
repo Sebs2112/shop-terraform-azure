@@ -1,4 +1,4 @@
 resource "azurerm_resource_group" "TDP-res-group" {
-  name     = "TDP"
+  name     = "${terraform.workspace}-TDP"
   location = "uksouth"
 }

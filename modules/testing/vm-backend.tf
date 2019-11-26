@@ -1,8 +1,8 @@
-resource "azurerm_virtual_machine" "managment-vm" {
-  name                  = "managment-vm"
+resource "azurerm_virtual_machine" "backend-vm" {
+  name                  = "${terraform.workspace}-backend-vm"
   location              = "${azurerm_resource_group.TDP-res-group.location}"
   resource_group_name   = "${azurerm_resource_group.TDP-res-group.name}"
-  network_interface_ids = ["${azurerm_network_interface.nic-managment.id}"]
+  network_interface_ids = ["${azurerm_network_interface.nic-backend.id}"]
   vm_size               = "Standard_DS1_v2"
 
   storage_image_reference {
@@ -12,13 +12,13 @@ resource "azurerm_virtual_machine" "managment-vm" {
     version   = "latest"
   }
   storage_os_disk {
-    name              = "managment-vm"
+    name              = "${terraform.workspace}-backend-vm"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
   os_profile {
-    computer_name  = "managment-vm"
+    computer_name  = "${terraform.workspace}-backend-vm"
     admin_username = "sebflower"
   }
   os_profile_linux_config {

@@ -1,5 +1,5 @@
 resource "azurerm_public_ip" "publicIP-frontend" {
-    name                         = "frontend-pip"
+    name                         = "${terraform.workspace}-frontend-pip"
     location                     = "${azurerm_resource_group.TDP-res-group.location}"
     resource_group_name          = "${azurerm_resource_group.TDP-res-group.name}"
     allocation_method            = "Dynamic"
@@ -7,7 +7,7 @@ resource "azurerm_public_ip" "publicIP-frontend" {
 }
 
 resource "azurerm_public_ip" "publicIP-managment" {
-    name                         = "managment-pip"
+    name                         = "${terraform.workspace}-managment-pip"
     location                     = "${azurerm_resource_group.TDP-res-group.location}"
     resource_group_name          = "${azurerm_resource_group.TDP-res-group.name}"
     allocation_method            = "Dynamic"
