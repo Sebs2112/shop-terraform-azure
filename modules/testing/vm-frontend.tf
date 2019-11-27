@@ -1,7 +1,7 @@
 resource "azurerm_virtual_machine" "frontend-vm" {
   name                  = "${terraform.workspace}-frontend-vm"
-  location              = "${azurerm_resource_group.TDP-res-group.location}"
-  resource_group_name   = "${azurerm_resource_group.TDP-res-group.name}"
+  location              = var.resource_group.location
+  resource_group_name   = var.resource_group.name
   network_interface_ids = ["${azurerm_network_interface.nic-frontend.id}"]
   vm_size               = "Standard_DS1_v2"
 
@@ -25,7 +25,17 @@ resource "azurerm_virtual_machine" "frontend-vm" {
     disable_password_authentication = true
     ssh_keys {
 	path = "/home/sebflower/.ssh/authorized_keys"
-	key_data = "${file("~/.ssh/id_rsa.pub")}"
+	key_data = file("~/.ssh/id_rsa.pub")
 	}
+  }
+
+  tags = {
+    environment = terraform.workspace
+  }
+  connection {
+   type = "ssh"
+   user = var.admin_user
+   private_key = file(pathexpand("~/.ssh/id_rsa"))
+   host = azurerm_public_ip.publicIP-frontend.fqdn
   }
 }

@@ -1,8 +1,8 @@
 resource "azurerm_network_security_group" "nsg-frontend" {
     name                = "${terraform.workspace}-frontend-nsg"
-    location            = "${azurerm_resource_group.TDP-res-group.location}"
-    resource_group_name = "${azurerm_resource_group.TDP-res-group.name}"
-    
+    location            = var.resource_group.location
+    resource_group_name = var.resource_group.name
+
     security_rule {
         name                       = "SSH"
         priority                   = 1001
@@ -41,9 +41,9 @@ resource "azurerm_network_security_group" "nsg-frontend" {
 
 resource "azurerm_network_security_group" "nsg-managment" {
     name                = "${terraform.workspace}-managment-nsg"
-    location            = "${azurerm_resource_group.TDP-res-group.location}"
-    resource_group_name = "${azurerm_resource_group.TDP-res-group.name}"
-    
+    location            = var.resource_group.location
+    resource_group_name = var.resource_group.name
+
     security_rule {
         name                       = "SSH"
         priority                   = 1001
@@ -55,14 +55,14 @@ resource "azurerm_network_security_group" "nsg-managment" {
         source_address_prefix      = "*"
         destination_address_prefix = "*"
     }
-   
-    
+
+
 }
 resource "azurerm_network_security_group" "nsg-backend" {
     name                = "${terraform.workspace}-backend-nsg"
-    location            = "${azurerm_resource_group.TDP-res-group.location}"
-    resource_group_name = "${azurerm_resource_group.TDP-res-group.name}"
-    
+    location            = var.resource_group.location
+    resource_group_name = var.resource_group.name
+
     security_rule {
         name                       = "SSH-from-managment"
         priority                   = 1001
@@ -85,5 +85,5 @@ resource "azurerm_network_security_group" "nsg-backend" {
         source_address_prefix      = "10.0.2.0/24"
         destination_address_prefix = "*"
     }
-  
+
 }

@@ -1,7 +1,7 @@
 resource "azurerm_virtual_machine" "backend-vm" {
   name                  = "${terraform.workspace}-backend-vm"
-  location              = "${azurerm_resource_group.TDP-res-group.location}"
-  resource_group_name   = "${azurerm_resource_group.TDP-res-group.name}"
+  location              = var.resource_group.location
+  resource_group_name   = var.resource_group.name
   network_interface_ids = ["${azurerm_network_interface.nic-backend.id}"]
   vm_size               = "Standard_DS1_v2"
 
@@ -17,15 +17,24 @@ resource "azurerm_virtual_machine" "backend-vm" {
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
+
   os_profile {
     computer_name  = "${terraform.workspace}-backend-vm"
     admin_username = "sebflower"
   }
   os_profile_linux_config {
-    disable_password_authentication = true
-    ssh_keys {
-	path = "/home/sebflower/.ssh/authorized_keys"
-	key_data = "${file("~/.ssh/id_rsa.pub")}"
-	}
-  }
-}
+     disable_password_authentication = true
+     ssh_keys {
+ 	  path = "/home/${var.admin_user}/.ssh/authorized_keys"
+ 	  key_data = file(pathexpand("~/.ssh/id_rsa.pub"))
+ 	}
+   }
+   tags = {
+     environment = terraform.workspace
+   }
+   connection {
+ 		type = "ssh"
+ 		user = var.admin_user
+ 		private_key = file(pathexpand("~/.ssh/id_rsa"))
+   }
+ }
