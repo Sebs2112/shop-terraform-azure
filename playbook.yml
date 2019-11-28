@@ -1,5 +1,4 @@
-- hosts: 127.0.0.1
-  connection: local
+- hosts: all
   become: true
   tasks:
   - name: Install NGINX
@@ -11,3 +10,27 @@
     service:
       name: nginx
       state: started
+  - name: Install latest version of "openjdk-8-jdk" ignoring "install-recommends"
+    apt:
+      name: openjdk-8-jdk
+      state: latest
+      install_recommends: no
+  - name: Add Jenkins Repository Key
+    apt_key:
+      url: "https://pkg.jenkins.io/debian/jenkins.io.key"
+      state: present
+  - name: Add Jenkins Repository
+    apt_repository:
+      repo: "deb http://pkg.jenkins.io/debian-stable binary/"
+      state: present
+      update_cache: yes
+  - name: Install Jenkins
+    apt:
+      name: jenkins
+      state: present
+      update_cache: yes
+  - name: Start Jenkins Service
+    service:
+      name: jenkins
+      state: started
+

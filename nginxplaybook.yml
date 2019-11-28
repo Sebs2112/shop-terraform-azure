@@ -1,0 +1,24 @@
+- hosts: all
+  become: true
+  tasks:
+  - name: Install NGINX
+    apt:
+      name: nginx
+      state: latest
+      update_cache: true
+  - name: Start NGINX Service
+    service:
+      name: nginx
+      state: started
+  - name: Copy file with owner and permissions
+    copy:
+      src: nginx.conf
+      dest: /etc/nginx/nginx.conf
+      owner: root
+      group: root
+      mode: '0777'
+  - name: This command will change the working directory to somedir/.
+    shell:
+      cmd: sudo systemctl reload nginx
+      
+
