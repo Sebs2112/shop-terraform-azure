@@ -5,3 +5,7 @@ output "managment_fqdn" {
 output "frontend_fqdn" {
   value = azurerm_public_ip.publicIP-frontend.fqdn
 }
+
+output "frontend_priv" {
+value = azurerm_public_ip.publicIP-frontend.fqdn  
+}
